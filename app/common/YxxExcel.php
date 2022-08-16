@@ -96,7 +96,7 @@ class YxxExcel
      */
     public function export(array $data, $fileName = 'export_file_name')
     {
-        $capitalArr = ['A', 'C', 'D', 'E', 'F', 'G', 'H'];
+        $capitalArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
         $headerArr = $this->headerArr;
         $headerNewArr = array_values($headerArr);
         $headerKeyArr = array_keys($headerArr);
