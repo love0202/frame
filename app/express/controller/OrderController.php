@@ -45,30 +45,36 @@ class OrderController extends Controller
             $tianmaoTable = Db::name('tianmao_order_shop')->getTable();
             $pddTable = Db::name('pdd_order_shop')->getTable();
             $pddManualTable = Db::name('pdd_order_manual')->getTable();
+            $wangdiantongTable = Db::name('wangdiantong_order')->getTable();
 
             // 快递
             foreach ($expressTypeList as $key => $value) {
                 $dbTableName = 'express_'.$value;
                 $expressTable = Db::name($dbTableName)->getTable();
                 $sqlUpdate = <<<EOT
-            UPDATE {$expressTable} AS express
-            LEFT JOIN (
-            SELECT order_express_number, member AS  member_str, GROUP_CONCAT(shopinfo) AS shopinfo_str
-            FROM {$tianmaoTable}
-            WHERE order_express_number != ''
-            GROUP BY order_express_number
-            UNION ALL
-            SELECT order_express_number, GROUP_CONCAT(order_number) AS  member_str, GROUP_CONCAT(shopinfo) AS shopinfo_str
-            FROM {$pddTable}
-            WHERE order_express_number != ''
-            GROUP BY order_express_number
-            UNION ALL
-            SELECT order_express_number, GROUP_CONCAT(order_number) AS  member_str, GROUP_CONCAT(shopinfo) AS shopinfo_str
-            FROM {$pddManualTable}
-            WHERE order_express_number != ''
-            GROUP BY order_express_number) AS store ON express.order_number = store.order_express_number SET 
-            express.shopinfo = store.shopinfo_str,express.member = store.member_str;
+                    UPDATE {$expressTable} AS express
+                    LEFT JOIN (
+                    SELECT order_express_number, member AS  member_str, GROUP_CONCAT(shopinfo) AS shopinfo_str
+                    FROM {$tianmaoTable}
+                    WHERE order_express_number != ''
+                    GROUP BY order_express_number
+                    UNION ALL
+                    SELECT order_express_number, GROUP_CONCAT(order_number) AS  member_str, GROUP_CONCAT(shopinfo) AS shopinfo_str
+                    FROM {$pddTable}
+                    WHERE order_express_number != ''
+                    GROUP BY order_express_number
+                    UNION ALL
+                    SELECT order_express_number, GROUP_CONCAT(order_number) AS  member_str, GROUP_CONCAT(shopinfo) AS shopinfo_str
+                    FROM {$pddManualTable}
+                    WHERE order_express_number != ''
+                    GROUP BY order_express_number) AS store ON express.order_number = store.order_express_number SET 
+                    express.shopinfo = store.shopinfo_str,express.member = store.member_str;
+                    UPDATE {$expressTable} AS express
+                    LEFT JOIN {$wangdiantongTable} AS store ON express.order_number = store.order_express_number SET 
+                    express.weight = store.weight
+                    WHERE store.order_number != '';
 EOT;
+dd($sqlUpdate);
                 $ret = Db::execute($sqlUpdate);
             }
 
