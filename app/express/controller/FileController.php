@@ -169,12 +169,19 @@ class FileController extends Controller
             $temp = [];
             $isDiff = '';
             if (!empty($value['weight']) && !empty($value['express_weight'])) {
-                $isDiff = '已核对';
-                if ($value['weight'] != $value['express_weight']) {
+                if ($value['weight'] == $value['express_weight']) {
+                    $isDiff = '已核对';
+                } else {
                     $leveExpress = $this->judgeLeve($value['express_weight']);
                     $leve = $this->judgeLeve($value['weight']);
-                    if ($leveExpress != $leve) {
-                        $isDiff = '有差异(' . $leve . ')';
+                    if ($leveExpress == '等级不存在') {
+                        $isDiff = '等级不存在';
+                    } else {
+                        if ($leveExpress != $leve) {
+                            $isDiff = '有差异(' . $leve . ')';
+                        } else {
+                            $isDiff = '已核对';
+                        }
                     }
                 }
             }
@@ -329,7 +336,7 @@ class FileController extends Controller
                 $colArr = ['A', 'D'];
                 break;
             case yxx_config_value('EXPRESS_TYPE', 'T6'):
-                $colArr = ['C', 'F'];
+                $colArr = ['A', 'D'];
                 break;
             default:
                 break;

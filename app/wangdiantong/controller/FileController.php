@@ -76,7 +76,7 @@ class FileController extends Controller
         $insertData = [];
         // 获取 excel 数据
         //0 => "原始单号" 1 => "物流公司" 2 => "物流单号" 3 => "实际重量"
-        $colArr = ['A', 'H', 'I', 'M'];
+        $colArr = ['A', 'F', 'G', 'K'];
         $excelModel = new YxxExcel();
         $excelModel->setColArr($colArr);
         $data = $excelModel->read($fileInfo['order_path'], true);

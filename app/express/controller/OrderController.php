@@ -69,12 +69,20 @@ class OrderController extends Controller
                     WHERE order_express_number != ''
                     GROUP BY order_express_number) AS store ON express.order_number = store.order_express_number SET 
                     express.shopinfo = store.shopinfo_str,express.member = store.member_str;
+EOT;
+                $ret = Db::execute($sqlUpdate);
+            }
+
+            // 快递
+            foreach ($expressTypeList as $key => $value) {
+                $dbTableName = 'express_'.$value;
+                $expressTable = Db::name($dbTableName)->getTable();
+                $sqlUpdate = <<<EOT
                     UPDATE {$expressTable} AS express
                     LEFT JOIN {$wangdiantongTable} AS store ON express.order_number = store.order_express_number SET 
                     express.weight = store.weight
                     WHERE store.order_number != '';
 EOT;
-dd($sqlUpdate);
                 $ret = Db::execute($sqlUpdate);
             }
 

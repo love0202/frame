@@ -100,8 +100,8 @@ class FileController extends Controller
         $insertOrderShopData = [];
 
         // 获取 excel 数据
-        //0 => "订单编号" 1 => "买家会员名" 2 => "物流单号 " 3 => "物流公司"
-        $colArr = ['A', 'B', 'Y', 'Z'];
+        //0 => "订单编号" 1 => "联系手机" 2 => "物流单号 " 3 => "物流公司"
+        $colArr = ['A', 'Q', 'W', 'X'];
         $excelModel = new YxxExcel();
         $excelModel->setColArr($colArr);
         $orderData = $excelModel->read($fileInfo['order_path']);
