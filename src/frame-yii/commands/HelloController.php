@@ -17,6 +17,8 @@ use yii\console\ExitCode;
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
+ * 运行文件：D:\work\work_xiangwei\frame\src\frame-yii\
+ * 运行命令："yii hello/index id"  会调用 "actionIndex('id')"
  */
 class HelloController extends Controller
 {
